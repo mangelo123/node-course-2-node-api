@@ -24,7 +24,17 @@ app.post('/todos', (req, res) => {
 });
 
 app.get('/todos', (req, res) => {
-
+    Todo.find().then((todos) => {
+        res.send({
+            // Sending back the array as an object member makes it
+            // more flexible to add other properties later.
+            todos: todos
+        })
+    }, (err) => {
+        res
+        .status(400)
+        .send(err);
+    });
 });
 
 app.listen(3000, () => {
