@@ -10,5 +10,8 @@ else if (env === 'test') {
 }
 else {
     // production
+    
+    // Had to override the Heroku setting due to a credit card requirement
+    // for free accounts.
     process.env.MONGODB_URI = 'mongodb://mangelo:malip7557@ds155811.mlab.com:55811/mangelo-todoapp';
 }
