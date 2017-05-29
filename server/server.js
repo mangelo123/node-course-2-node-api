@@ -110,9 +110,32 @@ app.patch('/todos/:id', (req, res) => {
     .catch((err) => {
         res.status(400).send();
     });
-
-
 });
+
+app.post('/users', (req, res) => {
+    var body = _.pick(req.body, ['email', 'password']);
+
+    // Alternate syntax because body has all of the properties:
+    // var user = new User(body);
+    //
+    var user = new User({
+        email: body.email,
+        password: body.password
+    });
+
+    user.save().then(() => {
+        return user.generateAuthToken();
+    })
+    .then((token) => {
+        // Headers that begin with 'x-' indicate a custom header
+        res.header('x-auth', token).send(user);    
+    })
+    .catch((err) => {
+        res.status(400)
+           .send(err);
+    });
+});
+
 
 app.listen(port, () => {
     console.log(`Started on port ${port}`);
